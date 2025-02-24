@@ -31,7 +31,7 @@ class AuditInscription
     #[ORM\Column]
     private ?int $droitAncien = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $droitNouveau = null;
 
     public function getId(): ?int
@@ -104,7 +104,7 @@ class AuditInscription
         return $this->droitAncien;
     }
 
-    public function setDroitAncien(int $droitAncien): static
+    public function setDroitAncien(?int $droitAncien): static
     {
         $this->droitAncien = $droitAncien;
 
