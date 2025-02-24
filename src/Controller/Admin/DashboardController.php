@@ -56,7 +56,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Inscription', 'fa-solid fa-user ', Inscription::class)
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linkToCrud('Inscription', 'fas fa-user', AuditInscription::class)
+        yield MenuItem::linkToCrud('Audit Inscription', 'fa-solid fa-user', AuditInscription::class)
             ->setPermission('ROLE_ADMIN');
     }
 }
