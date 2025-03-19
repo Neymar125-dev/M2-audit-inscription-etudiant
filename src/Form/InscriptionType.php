@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Inscription;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Unique;
 
 class InscriptionType extends AbstractType
 {

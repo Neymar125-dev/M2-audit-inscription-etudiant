@@ -45,4 +45,14 @@ class AuditInscriptionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findCountActionsByType(): array
+    {
+        return $this->createQueryBuilder('ai')
+            ->select('ai.typeAction as type, COUNT(ai.id) as count')
+            ->groupBy('ai.typeAction')
+            ->orderBy('count', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

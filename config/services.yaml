@@ -23,6 +23,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 # config/services.yaml
+    
     App\EventSubscriber\InscriptionSubscriber:
+        autowire: true
+        autoconfigure: true
         tags:
-            - {name: doctrine.event_subscriber}
+            - { name: doctrine.event_subscriber, connection: default }

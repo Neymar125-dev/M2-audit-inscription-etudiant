@@ -17,11 +17,7 @@ class InscriptionSubscriber implements EventSubscriber
     private array $temp = [];
     private $security;
     private $entityManager;
-    private array $executionCounts = [
-        'insert' => 0,
-        'update' => 0,
-        'delete' => 0,
-    ];
+
     public function __construct(Security $security, EntityManagerInterface $entityManager)
     {
         $this->security = $security;
@@ -83,7 +79,7 @@ class InscriptionSubscriber implements EventSubscriber
         //Droit
         if ($args->hasChangedField('droit')) {
             $old['droit'] = $args->getOldValue('droit');
-            $new['droi'] = $args->getNewValue('droit');
+            $new['droit'] = $args->getNewValue('droit');
         } else {
             $old['droit'] = $currentData['droit'];
             $new['droit'] = $currentData['droit'];
@@ -161,7 +157,6 @@ class InscriptionSubscriber implements EventSubscriber
 
     private function logAudit(LifecycleEventArgs $args, string $action, ?array $old, array $new): void
     {
-        $this->executionCounts[$action]++;
         $conn = $this->entityManager->getConnection();
         $entityManager = $args->getObjectManager();
 
@@ -224,18 +219,6 @@ class InscriptionSubscriber implements EventSubscriber
                 $e
             );
         }
-    }
-    public function getExecutionCounts(): array
-    {
-        return $this->executionCounts;
-    }
-    public function resetExecutionCounts(): void
-    {
-        $this->executionCounts = [
-            'insert' => 0,
-            'update' => 0,
-            'delete' => 0,
-        ];
     }
     private function getCurrentUser(): string
     {
