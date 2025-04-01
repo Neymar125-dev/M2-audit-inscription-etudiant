@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Facture;
+use DateTimeImmutable;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,6 +16,7 @@ class FactureType extends AbstractType
             ->add('numero')
             ->add('nom')
             ->add('montant')
+            ->add('date')
         ;
     }
 

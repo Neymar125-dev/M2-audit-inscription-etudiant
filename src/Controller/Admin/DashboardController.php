@@ -60,12 +60,13 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Gestion Des Etudiants');
+            ->setTitle('Gestion des factures des clients');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home',);
+        //->setPermission('ROLE_SUPER_ADMIN');
         yield MenuItem::linkToCrud('Facture', 'fa-solid fa-user ', Facture::class)
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Audit Facture', 'fa-solid fa-user', AuditFacture::class)

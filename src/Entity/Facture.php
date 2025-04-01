@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FactureRepository;
+use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,6 +34,14 @@ class Facture
         message: "Le numéro de la facture est obligatoire."
     )]
     private ?string $numero = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $date = null;
+
+    public function __construct()
+    {
+        $this->date = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -71,6 +80,18 @@ class Facture
     public function setNumero(string $numero): static
     {
         $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeImmutable $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

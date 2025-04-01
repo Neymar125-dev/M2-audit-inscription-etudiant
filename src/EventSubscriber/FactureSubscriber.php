@@ -76,13 +76,21 @@ class FactureSubscriber implements EventSubscriber
             $new['nom'] = $currentData['nom'];
         }
 
-        //Nom
+        //Montant
         if ($args->hasChangedField('montant')) {
-            $old['montant'] = $args->getOldValue('montantmontant');
+            $old['montant'] = $args->getOldValue('montant');
             $new['montant'] = $args->getNewValue('droit');
         } else {
             $old['montant'] = $currentData['montant'];
             $new['montant'] = $currentData['montant'];
+        }
+        //Date
+        if ($args->hasChangedField('date')) {
+            $old['date'] = $args->getOldValue('date');
+            $new['date'] = $args->getNewValue('date');
+        } else {
+            $old['date'] = $currentData['date'];
+            $new['date'] = $currentData['date'];
         }
     }
 
@@ -141,6 +149,10 @@ class FactureSubscriber implements EventSubscriber
                 $old['montant'] = $currentData['montant'];
                 $new['montant'] = $currentData['montant'];
             }
+            if (!isset($changes['date'])) {
+                $old['date'] = $currentData['date'];
+                $new['date'] = $currentData['date'];
+            }
 
             $this->logAudit($args, 'update', $old, $new);
         }
@@ -151,7 +163,8 @@ class FactureSubscriber implements EventSubscriber
         return [
             'numero' => $entity->getNumero(),
             'nom' => $entity->getNom(),
-            'montant' => $entity->getMontant()
+            'montant' => $entity->getMontant(),
+            'date' => $entity->getDate()
         ];
     }
 
