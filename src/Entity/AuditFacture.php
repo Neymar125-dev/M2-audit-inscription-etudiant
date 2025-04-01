@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AuditInscriptionRepository;
+use App\Repository\AuditFactureRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AuditInscriptionRepository::class)]
-class AuditInscription
+#[ORM\Entity(repositoryClass: AuditFactureRepository::class)]
+class AuditFacture
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,9 +19,6 @@ class AuditInscription
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $matricule = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
@@ -29,10 +26,13 @@ class AuditInscription
     private ?string $utilisateur = null;
 
     #[ORM\Column]
-    private ?int $droitAncien = null;
+    private ?int $montantAncien = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $droitNouveau = null;
+    private ?int $montantNouveau = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $numero = null;
 
     public function getId(): ?int
     {
@@ -63,18 +63,6 @@ class AuditInscription
         return $this;
     }
 
-    public function getMatricule(): ?string
-    {
-        return $this->matricule;
-    }
-
-    public function setMatricule(string $matricule): static
-    {
-        $this->matricule = $matricule;
-
-        return $this;
-    }
-
     public function getNom(): ?string
     {
         return $this->nom;
@@ -99,26 +87,38 @@ class AuditInscription
         return $this;
     }
 
-    public function getDroitAncien(): ?int
+    public function getMontantAncien(): ?int
     {
-        return $this->droitAncien;
+        return $this->montantAncien;
     }
 
-    public function setDroitAncien(?int $droitAncien): static
+    public function setMontantAncien(?int $montantAncien): static
     {
-        $this->droitAncien = $droitAncien;
+        $this->montantAncien = $montantAncien;
 
         return $this;
     }
 
-    public function getDroitNouveau(): ?int
+    public function getMontantNouveau(): ?int
     {
-        return $this->droitNouveau;
+        return $this->montantNouveau;
     }
 
-    public function setDroitNouveau(int $droitNouveau): static
+    public function setMontantNouveau(int $montantNouveau): static
     {
-        $this->droitNouveau = $droitNouveau;
+        $this->montantNouveau = $montantNouveau;
+
+        return $this;
+    }
+
+    public function getNumero(): ?string
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(string $numero): static
+    {
+        $this->numero = $numero;
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\AuditInscription;
-use App\Entity\Inscription;
+use App\Entity\AuditFacture;
+use App\Entity\Facture;
 use DateTimeImmutable;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +12,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
 
-class InscriptionSubscriber implements EventSubscriber
+class FactureSubscriber implements EventSubscriber
 {
     private array $temp = [];
     private $security;
@@ -36,7 +36,7 @@ class InscriptionSubscriber implements EventSubscriber
     public function preRemove(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Inscription) {
+        if (!$entity instanceof Facture) {
             return;
         }
         $this->temp[] = [
@@ -48,7 +48,7 @@ class InscriptionSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Inscription) {
+        if (!$entity instanceof Facture) {
             return;
         }
         //recuperer les valeurs actuels
@@ -58,13 +58,13 @@ class InscriptionSubscriber implements EventSubscriber
         $new = [];
         $old = [];
 
-        //Matricule 
-        if ($args->hasChangedField('matricule')) {
-            $old['matricule'] = $args->getOldValue('matricule');
-            $new['matricule'] = $args->getNewValue('matricule');
+        //Numéro facture 
+        if ($args->hasChangedField('numero')) {
+            $old['numero'] = $args->getOldValue('numero');
+            $new['numero'] = $args->getNewValue('numero');
         } else {
-            $old['matricule'] = $currentData['matricule'];
-            $new['matricule'] = $currentData['matricule'];
+            $old['numero'] = $currentData['numero'];
+            $new['numero'] = $currentData['numero'];
         }
 
         //Nom
@@ -76,20 +76,20 @@ class InscriptionSubscriber implements EventSubscriber
             $new['nom'] = $currentData['nom'];
         }
 
-        //Droit
-        if ($args->hasChangedField('droit')) {
-            $old['droit'] = $args->getOldValue('droit');
-            $new['droit'] = $args->getNewValue('droit');
+        //Nom
+        if ($args->hasChangedField('montant')) {
+            $old['montant'] = $args->getOldValue('montantmontant');
+            $new['montant'] = $args->getNewValue('droit');
         } else {
-            $old['droit'] = $currentData['droit'];
-            $new['droit'] = $currentData['droit'];
+            $old['montant'] = $currentData['montant'];
+            $new['montant'] = $currentData['montant'];
         }
     }
 
     public function postRemove(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Inscription) {
+        if (!$entity instanceof Facture) {
             return;
         }
 
@@ -105,7 +105,7 @@ class InscriptionSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Inscription) {
+        if (!$entity instanceof Facture) {
             return;
         }
 
@@ -115,7 +115,7 @@ class InscriptionSubscriber implements EventSubscriber
     public function postUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Inscription) {
+        if (!$entity instanceof Facture) {
             return;
         }
         $unitOfWork = $this->entityManager->getUnitOfWork();
@@ -129,29 +129,29 @@ class InscriptionSubscriber implements EventSubscriber
                 $new[$field] = $change[1];
             }
             //conserver les valeurs non modifier// Conserver les valeurs non modifiées
-            if (!isset($changes['matricule'])) {
-                $old['matricule'] = $currentData['matricule'];
-                $new['matricule'] = $currentData['matricule'];
+            if (!isset($changes['numero'])) {
+                $old['numero'] = $currentData['numero'];
+                $new['numero'] = $currentData['numero'];
             }
             if (!isset($changes['nom'])) {
                 $old['nom'] = $currentData['nom'];
                 $new['nom'] = $currentData['nom'];
             }
-            if (!isset($changes['droit'])) {
-                $old['droit'] = $currentData['droit'];
-                $new['droit'] = $currentData['droit'];
+            if (!isset($changes['montant'])) {
+                $old['montant'] = $currentData['montant'];
+                $new['montant'] = $currentData['montant'];
             }
 
             $this->logAudit($args, 'update', $old, $new);
         }
     }
 
-    private function entityToArray(Inscription $entity): array
+    private function entityToArray(Facture $entity): array
     {
         return [
-            'matricule' => $entity->getMatricule(),
+            'numero' => $entity->getNumero(),
             'nom' => $entity->getNom(),
-            'droit' => $entity->getDroit()
+            'montant' => $entity->getMontant()
         ];
     }
 
@@ -169,33 +169,33 @@ class InscriptionSubscriber implements EventSubscriber
 
             switch ($action) {
                 case 'insert':
-                    $audit = new AuditInscription();
+                    $audit = new AuditFacture();
                     $audit->setTypeAction('INSERT');
                     $audit->setUpdatedAt(new DateTimeImmutable());
-                    $audit->setMatricule($new['matricule']);
+                    $audit->setNumero($new['numero']);
                     $audit->setNom($new['nom']);
-                    $audit->setDroitAncien($new['droit'] ?? null);
-                    $audit->setDroitNouveau($new['droit']);
+                    $audit->setMontantAncien($new['montant'] ?? null);
+                    $audit->setMontantNouveau($new['montant']);
                     $audit->setUtilisateur($this->getCurrentUser());
                     break;
                 case 'update':
-                    $audit = new AuditInscription();
+                    $audit = new AuditFacture();
                     $audit->setTypeAction('UPDATE');
                     $audit->setUpdatedAt(new DateTimeImmutable());
-                    $audit->setMatricule($new['matricule']);
+                    $audit->setNumero($new['numero']);
                     $audit->setNom($new['nom']);
-                    $audit->setDroitAncien($old['droit'] ?? null);
-                    $audit->setDroitNouveau($new['droit']);
+                    $audit->setMontantAncien($old['montant'] ?? null);
+                    $audit->setMontantNouveau($new['montant']);
                     $audit->setUtilisateur($this->getCurrentUser());
                     break;
                 case 'delete':
-                    $audit = new AuditInscription();
+                    $audit = new AuditFacture();
                     $audit->setTypeAction('DELETE');
                     $audit->setUpdatedAt(new DateTimeImmutable());
-                    $audit->setMatricule($old['matricule']);
+                    $audit->setNumero($old['numero']);
                     $audit->setNom($old['nom']);
-                    $audit->setDroitAncien($old['droit'] ?? null);
-                    $audit->setDroitNouveau($old['droit']);
+                    $audit->setMontantAncien($old['montant'] ?? null);
+                    $audit->setMontantNouveau($old['montant']);
                     $audit->setUtilisateur($this->getCurrentUser());
                     break;
                 default:

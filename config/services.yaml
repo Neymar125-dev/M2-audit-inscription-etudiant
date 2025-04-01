@@ -24,7 +24,7 @@ services:
     # please note that last definitions always *replace* previous ones
 # config/services.yaml
     
-    App\EventSubscriber\InscriptionSubscriber:
+    App\EventSubscriber\FactureSubscriber:
         autowire: true
         autoconfigure: true
         tags:

@@ -2,10 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\AuditInscription;
-use App\Entity\Inscription;
-use App\EventSubscriber\InscriptionSubscriber;
-use App\Repository\AuditInscriptionRepository;
+use App\Entity\AuditFacture;
+use App\Entity\Facture;
+use App\EventSubscriber\FactureSubscriber;
+use App\Repository\AuditFactureRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -19,7 +19,7 @@ class DashboardController extends AbstractDashboardController
 {
     private $auditRepo;
 
-    public function __construct(AuditInscriptionRepository $auditRepo)
+    public function __construct(AuditFactureRepository $auditRepo)
     {
         $this->auditRepo = $auditRepo;
     }
@@ -66,9 +66,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Inscription', 'fa-solid fa-user ', Inscription::class)
+        yield MenuItem::linkToCrud('Facture', 'fa-solid fa-user ', Facture::class)
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linkToCrud('Audit Inscription', 'fa-solid fa-user', AuditInscription::class)
-            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Audit Facture', 'fa-solid fa-user', AuditFacture::class)
+            ->setPermission('ROLE_SUPER_ADMIN');
     }
 }

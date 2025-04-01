@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\AuditInscription;
+use App\Entity\AuditFacture;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -11,11 +11,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 
-class AuditInscriptionCrudController extends AbstractCrudController
+class AuditFactureCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return AuditInscription::class;
+        return AuditFacture::class;
     }
 
     /*public function configureAssets(): array
@@ -31,10 +31,10 @@ class AuditInscriptionCrudController extends AbstractCrudController
         $fields =  [
             IdField::new('id'),
             TextField::new('typeAction'),
-            TextField::new('matricule'),
+            TextField::new('numero'),
             TextField::new('nom'),
-            NumberField::new('droitAncien'),
-            NumberField::new('droitNouveau'),
+            NumberField::new('MontantAncien'),
+            NumberField::new('MontantNouveau'),
             TextField::new('utilisateur'),
             DateTimeField::new('updated_At'),
         ];
